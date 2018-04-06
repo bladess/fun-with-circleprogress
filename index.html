@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+   <title>Document</title>
+
+</head>
+
+<body>
+   <style>
+      #container {
+         margin: 20px;
+         width: 200px;
+         height: 200px;
+      }
+   </style>
+   <div id='container'></div>
+   <textarea id="text" maxlength="280"></textarea>
+   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
+   <script src="node_modules/progressbar.js/dist/progressbar.js"></script>
+   <script>
+      function componentToHex(c) {
+         var hex = c.toString(16);
+         return hex.length == 1 ? "0" + hex : hex;
+      }
+
+      function rgbToHex(r, g, b) {
+         return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+      }
+
+      // progressbar.js@1.0.0 version is used
+      // Docs: http://progressbarjs.readthedocs.org/en/1.0.0/
+
+      // progressbar.js@1.0.0 version is used
+      // Docs: http://progressbarjs.readthedocs.org/en/1.0.0/
+      var container = document.getElementById('container');
+
+      var bar = new ProgressBar.Circle(container, {
+         strokeWidth: 50,
+         easing: 'easeInOut',
+         duration: 1,
+         color: '#FFEA82',
+         trailColor: '#eee',
+         trailWidth: 0,
+         svgStyle: null
+      });
+      console.log(bar);
+      $('#text').on('change keyup paste', function () {
+         var red, green;
+         var percent = $(this).val().trim().length / 280;
+         if (percent < 0.5) {
+            green = 255; //On first part of the gradient, red is always 255
+            red = Math.floor((percent * 2) * 255);
+         }
+         else {
+            green = Math.floor(255 * (1 - ((percent - 0.5) * 2))); //On that second part, red go from 255 to 0
+            red = 255;
+         }
+         console.log(red);
+         $('svg :nth-child(2)').attr('stroke', rgbToHex(red,0,green));
+
+         bar.animate(percent);
+      })
+   // Number from 0.0 to 1.0
+   </script>
+</body>
+
+</html>
